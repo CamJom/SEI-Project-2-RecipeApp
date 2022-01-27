@@ -1,0 +1,17 @@
+.home-image {
+  position: relative;
+  text-align: center;
+  .overlay-text {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px 45px;
+  }
+}
+
+.carousel-caption {
+  background-color: rgba(248, 249, 250, 0.8);
+  color: rgb(58, 58, 58);
+}
