@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import YoutubeEmbed from './Iframe'
 
 function RandomRecipe() {
 
@@ -21,28 +22,47 @@ function RandomRecipe() {
   }, [])
 
   useEffect(() => {
-    console.log(randomRecipe.meals)
+    console.log('random recipe=>', randomRecipe.meals)
   }, [randomRecipe])
+
+  const ingredients = () => {
+    const filteredIngredients = randomRecipe.meals && (Object.entries(randomRecipe?.meals[0]).filter(arr => arr[0].includes('Ingredient')).filter(arr => arr[1]))
+    console.log('filtered=>', filteredIngredients)
+    const filteredMeasures = randomRecipe.meals && (Object.entries(randomRecipe?.meals[0]).filter(arr => arr[0].includes('Measure')).filter(arr => arr[1]))
+    const mapped = filteredMeasures && filteredMeasures.map(arr => {
+      return arr[1]
+    })
+    return (
+      <ul>
+        {filteredIngredients && filteredIngredients.map((ingredient, index) => {
+          return <li key={index}>{ingredient[1]} - {mapped[index]}</li>
+        })}
+      </ul>
+    )
+  }
 
   return (
     <Container>
-      {randomRecipe.meals ?
-        <>
-          <Row>
-            <h1>{randomRecipe?.meals[0].strMeal}</h1>
-          </Row>
-          <Row>
-            <Col>
-              <img src={randomRecipe.meals[0].strMealThumb} alt={randomRecipe.meals[0].strMeal} />
-            </Col>
-            <Col>{randomRecipe.meals[0].strInstructions}
-            </Col>
-          </Row>
-        </>
-        :
-        <p>Error</p>
-      }
-
+      <Row>
+        <h2>{randomRecipe?.meals && randomRecipe?.meals[0].strMeal}</h2>
+        <hr />
+      </Row>
+      <Row>
+        <Col sm={4}>
+          <img src={randomRecipe?.meals && randomRecipe?.meals[0]?.strMealThumb} alt={randomRecipe?.meals && randomRecipe?.meals[0]?.strMeal} className='recipe-image' />
+        </Col>
+        <Col sm={8}>
+          <h4>Ingredients</h4>
+          {ingredients()}
+          <hr />
+        </Col>
+      </Row>
+      <Row className='mt-4'>
+        <Col sm={8}>
+          <p>{randomRecipe.meals && randomRecipe?.meals[0]?.strInstructions}</p>
+        </Col>
+        <Col sm={4}><YoutubeEmbed embedURL={randomRecipe.meals && randomRecipe?.meals[0]?.strYoutube.replace('watch?v=', 'embed/')} /></Col>
+      </Row>
     </Container>
   )
 }

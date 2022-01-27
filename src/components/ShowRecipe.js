@@ -28,20 +28,18 @@ const ShowRecipe = () => {
   }, [idMeal, recipe])
 
   const ingredients = () => {
-    const filtered = recipe && (Object.entries(recipe.meals[0]).filter(arr => arr.includes('Ingredient')))
-    console.log('filtered=>', filtered)
+    const filteredIngredients = recipe && (Object.entries(recipe.meals[0]).filter(arr => arr[0].includes('Ingredient')).filter(arr => arr[1]))
+    console.log('filtered=>', filteredIngredients)
+    const filteredMeasures = recipe && (Object.entries(recipe.meals[0]).filter(arr => arr[0].includes('Measure')).filter(arr => arr[1]))
+    const mapped = filteredMeasures && filteredMeasures.map(arr => {
+      return arr[1]
+    })
     return (
-      < ul >
-        <li>{recipe && recipe.meals[0].strIngredient1} - {recipe && recipe.meals[0].strMeasure1}</li>
-        <li>{recipe && recipe.meals[0].strIngredient2}</li>
-        <li>{recipe && recipe.meals[0].strIngredient3}</li>
-        <li>{recipe && recipe.meals[0].strIngredient4}</li>
-        <li>{recipe && recipe.meals[0].strIngredient5}</li>
-        <li>{recipe && recipe.meals[0].strIngredient6}</li>
-        <li>{recipe && recipe.meals[0].strIngredient7}</li>
-        <li>{recipe && recipe.meals[0].strIngredient8}</li>
-        <li>{recipe && recipe.meals[0].strIngredient9}</li>
-      </ul >
+      <ul>
+        {filteredIngredients && filteredIngredients.map((ingredient, index) => {
+          return <li key={index}>{ingredient[1]} - {mapped[index]}</li>
+        })}
+      </ul>
     )
   }
 
@@ -58,17 +56,6 @@ const ShowRecipe = () => {
         <Col sm={8}>
           <h4>Ingredients</h4>
           {ingredients()}
-          <ul>
-            <li>{recipe && recipe.meals[0].strIngredient1} - {recipe && recipe.meals[0].strMeasure1}</li>
-            <li>{recipe && recipe.meals[0].strIngredient2}</li>
-            <li>{recipe && recipe.meals[0].strIngredient3}</li>
-            <li>{recipe && recipe.meals[0].strIngredient4}</li>
-            <li>{recipe && recipe.meals[0].strIngredient5}</li>
-            <li>{recipe && recipe.meals[0].strIngredient6}</li>
-            <li>{recipe && recipe.meals[0].strIngredient7}</li>
-            <li>{recipe && recipe.meals[0].strIngredient8}</li>
-            <li>{recipe && recipe.meals[0].strIngredient9}</li>
-          </ul>
           <hr />
         </Col>
       </Row>

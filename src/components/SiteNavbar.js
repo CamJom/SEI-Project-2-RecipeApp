@@ -11,7 +11,7 @@ const SiteNavbar = () => {
       <Container>
         <Navbar.Brand href="/">Recipe App</Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link href="/categories">Categories</Nav.Link>
+          <Nav.Link href="/browse">Browse all</Nav.Link>
           <Nav.Link href="/random">Random recipe</Nav.Link>
         </Nav>
       </Container>

@@ -6,21 +6,21 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 
-const RecipeCard = ({ searchedRecipe }) => {
+const RecipeCard = ({ searchResult }) => {
 
   const [recipe, setRecipe] = useState([])
 
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const { data } = await axios.get(`https://www.themealdb.com/api/json/v2/9973533/search.php?s=${searchedRecipe}`)
+        const { data } = await axios.get(`https://www.themealdb.com/api/json/v2/9973533/search.php?s=${searchResult}`)
         setRecipe(data)
       } catch (error) {
         console.log(error)
       }
     }
     getRecipes()
-  }, [searchedRecipe])
+  }, [searchResult])
 
   useEffect(() => {
     console.log(recipe)
@@ -28,7 +28,7 @@ const RecipeCard = ({ searchedRecipe }) => {
 
   return (
     <>
-      {searchedRecipe ?
+      {searchResult ?
         <Container>
           <Col>
             <Card style={{ width: '18rem' }}>
