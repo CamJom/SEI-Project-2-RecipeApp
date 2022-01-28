@@ -21,10 +21,6 @@ function RandomRecipe() {
     getRandomRecipe()
   }, [])
 
-  useEffect(() => {
-    console.log('random recipe=>', randomRecipe.meals)
-  }, [randomRecipe])
-
   const ingredients = () => {
     const filteredIngredients = randomRecipe.meals && (Object.entries(randomRecipe?.meals[0]).filter(arr => arr[0].includes('Ingredient')).filter(arr => arr[1]))
     console.log('filtered=>', filteredIngredients)
@@ -54,14 +50,19 @@ function RandomRecipe() {
         <Col sm={8}>
           <h4>Ingredients</h4>
           {ingredients()}
-          <hr />
         </Col>
       </Row>
       <Row className='mt-4'>
-        <Col sm={8}>
-          <p>{randomRecipe.meals && randomRecipe?.meals[0]?.strInstructions}</p>
+        <hr />
+        <Col md={8}>
+          <h4>Instructions:</h4>
+          <ol>
+            {randomRecipe.meals && randomRecipe?.meals[0].strInstructions.split('.').splice(0, randomRecipe.meals[0].strInstructions.split('.').length - 1).map(str => {
+              return <li style={{ fontSize: '15px' }}>{str}</li>
+            })}
+          </ol>
         </Col>
-        <Col sm={4}><YoutubeEmbed embedURL={randomRecipe.meals && randomRecipe?.meals[0]?.strYoutube.replace('watch?v=', 'embed/')} /></Col>
+        <Col md={4}><YoutubeEmbed embedURL={randomRecipe.meals && randomRecipe?.meals[0]?.strYoutube.replace('watch?v=', 'embed/')} /></Col>
       </Row>
     </Container>
   )

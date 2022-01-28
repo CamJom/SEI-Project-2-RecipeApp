@@ -5,12 +5,17 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import { Link } from 'react-router-dom'
+import spinner from '../assets/images/Spinner.gif'
 
 const Browse = () => {
   const [searchResult, setSearchResult] = useState('')
   const [recipes, setRecipes] = useState([])
   const [categoryList, setCategoryList] = useState([])
   const [category, setCategory] = useState('')
+  const [hasError, setHasError] = useState({
+    error: false,
+    message: ''
+  })
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -18,7 +23,7 @@ const Browse = () => {
         const { data } = await axios.get('https://www.themealdb.com/api/json/v2/9973533/search.php?s=')
         setRecipes(data.meals)
       } catch (err) {
-        console.log(err)
+        setHasError({ error: true, message: err.message })
       }
     }
     getRecipes()
@@ -34,18 +39,6 @@ const Browse = () => {
       setCategoryList(categoryListItems)
     }
   }, [recipes])
-
-
-  // const getRecipies = () => {
-  //   const shownMeal = []
-  //   if (shownMeal.length < 6) {
-  //     (selectedFilter.length ? selectedFilter : categories).map((meal, i) => {
-  //       return shownMeal.push(meal)
-  //     })
-  //   } else console.log('more to show')
-  //   setDisplayedMeals(shownMeal.slice(0, 6))
-  // }
-  // getRecipies()
 
   const handleSearch = (e) => {
     setSearchResult(e.target.value)
@@ -78,10 +71,10 @@ const Browse = () => {
   return (
     <>
       <Container>
-        <Row className='mt-4 ml-4'>
+        <Row className='mt-4 mb-4 search-filter'>
           <Col sm={8}>
             <h3>Search for recipes</h3>
-            <p>Maecenas sollicitudin porta nibh, ut gravida eros dapibus nec.</p>
+            <p> Got a dish in mind? see if we have it by typing the name below! </p>
             <input onChange={handleSearch} type="text" placeholder="Search" aria-label="Search" />
           </Col>
           <Col sm={4}>
@@ -96,20 +89,23 @@ const Browse = () => {
         </Row>
       </Container>
       <Container className='mt-4'>
-        <Row>
-          {searchFilter().map((recipe, i) =>
-            <Col key={i} id={i} className='mb-4'>
-              <Card style={{ width: '14rem' }}>
-                <Link to={`/recipes/${recipe.idMeal}`}>
-                  <Card.Img variant="top" src={recipe.strMealThumb} alt={recipe.strMeal} />
-                  <Card.Body>
-                    <Card.Title>{recipe.strMeal}</Card.Title>
-                  </Card.Body>
-                </Link>
-              </Card>
-            </Col>
-          )
-            // (shownMeal.length >= 6) && <button>Show More</button>
+        <Row className='mt-4'>
+          {searchFilter().length ?
+            (
+              searchFilter().map((recipe, i) =>
+                <Col key={i} id={i} className='mb-4'>
+                  <Card style={{ width: '14rem' }}>
+                    <Link to={`/recipes/${recipe.idMeal}`}>
+                      <Card.Img variant="top" src={recipe.strMealThumb} alt={recipe.strMeal} />
+                      <Card.Body>
+                        <Card.Title>{recipe.strMeal}</Card.Title>
+                      </Card.Body>
+                    </Link>
+                  </Card>
+                </Col>
+              )
+            )
+            : (hasError.error ? <h4 className='text-danger text-center'>{hasError.message}</h4> : <Container className='d-flex justify-content-center'><img src={spinner} alt={spinner} /> </Container>)
           }
         </Row>
       </Container>

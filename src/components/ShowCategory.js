@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import { Link, useParams } from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
 
 const ShowCategory = () => {
 
@@ -38,6 +39,11 @@ const ShowCategory = () => {
   return (
     <>
       <Container className='mt-4'>
+        <Row className='mb-4'>
+          <Link to="/">
+            <Button className='brand-button'>Back to home</Button>
+          </Link>
+        </Row>
         <Row>
           {categoryFilter.map((recipe, i) =>
             <Col key={i} id={i} className='mb-4'>
@@ -54,7 +60,7 @@ const ShowCategory = () => {
             // (shownMeal.length >= 6) && <button>Show More</button>
           }
         </Row>
-      </Container>
+      </Container >
     </>
   )
 }

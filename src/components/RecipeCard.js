@@ -3,7 +3,6 @@ import axios from 'axios'
 import Container from 'react-bootstrap/Container'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 
 const RecipeCard = ({ searchResult }) => {
@@ -28,7 +27,7 @@ const RecipeCard = ({ searchResult }) => {
 
   return (
     <>
-      {searchResult ?
+      {searchResult && recipe.meals ?
         <Container>
           <Col>
             <Card style={{ width: '18rem' }}>

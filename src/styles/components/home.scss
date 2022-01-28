@@ -1,6 +1,16 @@
 .card {
   margin: 0 auto;
+  -webkit-box-shadow: 0px 0px 15px -7px rgba(213, 116, 1, 0.77);
+  box-shadow: 0px 0px 15px -7px rgba(213, 116, 1, 0.77);
+  text-align: center;
 }
+
 .home-cards-container {
   background-color: rgb(238, 238, 238);
+}
+
+.about-text {
+  p {
+    font-size: 14px;
+  }
 }

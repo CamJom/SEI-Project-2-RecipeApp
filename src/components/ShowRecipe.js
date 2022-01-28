@@ -22,11 +22,6 @@ const ShowRecipe = () => {
     getRecipe()
   }, [idMeal])
 
-  useEffect(() => {
-    console.log('meal id =>', idMeal)
-    console.log('recipe=>', recipe)
-  }, [idMeal, recipe])
-
   const ingredients = () => {
     const filteredIngredients = recipe && (Object.entries(recipe.meals[0]).filter(arr => arr[0].includes('Ingredient')).filter(arr => arr[1]))
     console.log('filtered=>', filteredIngredients)
@@ -50,20 +45,25 @@ const ShowRecipe = () => {
         <hr />
       </Row>
       <Row>
-        <Col sm={4}>
+        <Col md={4}>
           <img src={recipe && recipe.meals[0].strMealThumb} alt={recipe && recipe.meals[0].strMeal} className='recipe-image' />
         </Col>
-        <Col sm={8}>
+        <Col md={8}>
           <h4>Ingredients</h4>
           {ingredients()}
-          <hr />
         </Col>
       </Row>
       <Row className='mt-4'>
-        <Col sm={8}>
-          <p>{recipe && recipe.meals[0].strInstructions}</p>
+        <hr />
+        <Col md={8}>
+          <h4>Instructions:</h4>
+          <ol>
+            {recipe && recipe.meals[0].strInstructions.split('.').splice(0, recipe.meals[0].strInstructions.split('.').length - 1).map(str => {
+              return <li style={{ fontSize: '15px' }}>{str}</li>
+            })}
+          </ol>
         </Col>
-        <Col sm={4}><YoutubeEmbed embedURL={recipe && recipe.meals[0].strYoutube.replace('watch?v=', 'embed/')} /></Col>
+        <Col md={4}><YoutubeEmbed embedURL={recipe && recipe.meals[0].strYoutube.replace('watch?v=', 'embed/')} /></Col>
       </Row>
     </Container>
   )

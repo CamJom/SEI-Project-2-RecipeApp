@@ -4,12 +4,14 @@ import axios from 'axios'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-// import { Link } from 'react-router-dom'
+import spinner from '../assets/images/Spinner.gif'
 
 const Search = ({ searchResult, setSearchResult }) => {
   const [recipes, setRecipes] = useState([])
-  // const [categoryList, setCategoryList] = useState([])
-  // const [category, setCategory] = useState('')
+  const [hasError, setHasError] = useState({
+    error: false,
+    message: ''
+  })
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -17,7 +19,7 @@ const Search = ({ searchResult, setSearchResult }) => {
         const { data } = await axios.get('https://www.themealdb.com/api/json/v2/9973533/search.php?s=')
         setRecipes(data.meals)
       } catch (err) {
-        console.log(err)
+        setHasError({ error: true, message: err.message })
       }
     }
     getRecipes()
@@ -30,88 +32,34 @@ const Search = ({ searchResult, setSearchResult }) => {
         categoryListItems.indexOf(meal.strCategory) === -1 && categoryListItems.push(meal.strCategory)
       })
       console.log(`category list ${categoryListItems}`)
-      // setCategoryList(categoryListItems)
     }
   }, [recipes])
-
-
-  // const getRecipies = () => {
-  //   const shownMeal = []
-  //   if (shownMeal.length < 6) {
-  //     (selectedFilter.length ? selectedFilter : categories).map((meal, i) => {
-  //       return shownMeal.push(meal)
-  //     })
-  //   } else console.log('more to show')
-  //   setDisplayedMeals(shownMeal.slice(0, 6))
-  // }
-  // getRecipies()
 
   const handleSearch = (e) => {
     setSearchResult(e.target.value)
     console.log('search result=>', searchResult)
   }
 
-  // const handleChange = (e) => {
-  //   setCategory(e.target.value)
-  // }
-
-  // const categoryFilter = () => {
-  //   if (category === false || category === 'All') {
-  //     console.log(categoryFilter().splice(5))
-  //     return recipes.splice(5)
-  //   }
-  //   return recipes.filter(recipe => {
-  //     return recipe.strCategory.includes(category)
-  //   }
-  //   )
-  // }
-  // const searchFilter = () => {
-  //   if (searchResult === false) {
-  //     console.log(categoryFilter().splice(5))
-  //     return categoryFilter().splice(5)
-  //   }
-  //   return categoryFilter().filter(recipe => {
-  //     return recipe.strMeal.toLowerCase().includes(searchResult.toLowerCase())
-  //   })
-  // }
-
-
-
   return (
     <>
       <Container className='mt-4'>
-        <Row>
-          <Col sm={8}>
-            <h2>Search for recipes</h2>
-            <p>Maecenas sollicitudin porta nibh, ut gravida eros dapibus nec.</p>
-            <input onChange={handleSearch} type="text" placeholder="Search" aria-label="Search" />
+        <Row className="d-flex justify-content-center">
+          <Col sm={8} className='mb-4 home-search'>
+            {recipes.length ?
+              (
+                <>
+                  <h2>Search for recipes</h2>
+                  <p> Got a dish in mind? see if we have it by typing the name below! </p>
+                  <input onChange={handleSearch} type="text" placeholder="Search" aria-label="Search" />
+                </>
+              )
+              :
+              (hasError.error ? <h4 className='text-danger text-center'>{hasError.message}</h4> : <img src={spinner} alt={spinner} />)
+            }
           </Col>
-          {/* <Col sm={4}>
-            <p>Filter by category</p>
-            <select onChange={handleChange}>
-              <option defaultValue>All</option>
-              {categoryList.map((strCategory, i) => {
-                return <option key={i} value={strCategory} name={strCategory}>{strCategory}</option>
-              })}
-            </select>
-          </Col> */}
         </Row>
       </Container>
       <Row>
-        {/* {searchFilter().map((recipe, i) =>
-          <Col key={i} id={i} className='mt-4'>
-            <Card style={{ width: '18rem' }}>
-              <Link to={`/recipes/${recipe.idMeal}`}>
-                <Card.Img variant="top" src={recipe.strMealThumb} alt={recipe.strMeal} />
-                <Card.Body>
-                  <Card.Title>{recipe.strMeal}</Card.Title>
-                </Card.Body>
-              </Link>
-            </Card>
-          </Col>
-        )
-          // (shownMeal.length >= 6) && <button>Show More</button>
-        } */}
       </Row>
     </>
   )
